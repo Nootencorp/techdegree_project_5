@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Nootencorp Personal Journal</title>
+        <link href="https://fonts.googleapis.com/css?family=Cousine:400" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans:600" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/normalize.css">
+        <link rel="stylesheet" href="/static/css/site.css">
+    </head>
+    <body>
+       <header>
+            <div class="container">
+                <div class="row" style="padding-top: 5px;">
+                    {% if current_user.is_authenticated %}
+                        <span>Hello{% if current_user.is_authenticated %} {{ current_user.email }}{% endif %}!</span>
+                        <a href="{{ url_for('logout') }}" class="icon-power right" title="Log out"><i class="material-icons">logout</i></a>
+                    {% else %}
+                    <a href="{{ url_for('register') }}" class="button icon-right" title="Register"><span>Register</span><i class="material-icons">register</i></a>
+                    <a href="{{ url_for('login') }}" class="button icon-right" title="Log in"><span>Login</span><i class="material-icons">login</i></a>
+                    {% endif %}
+                </div>
+                <div class="site-header">
+                    <a class="logo" href="{{ url_for('list_entries')}}"><i class="material-icons">library_books</i></a>
+                    {% if current_user.is_authenticated %}
+                    <a class="button icon-right" href="{{ url_for('add_entry') }}"><span>New Entry</span> <i class="material-icons">add</i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+        <section>
+            <div class="wrapper">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="message">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            {% block content %}{% endblock %}
+        </section>
+        <footer>
+            <div>
+                Nootencorp Industries
+            </div>
+        </footer>
+    </body>
+</html>
